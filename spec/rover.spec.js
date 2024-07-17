@@ -34,7 +34,7 @@ describe("Rover class", function() {
 
   it("responds correctly to the status check command", function() {
     let commands = [new Command('STATUS_CHECK')];
-    let message = new Message('Test message with two commands', commands);
+    let message = new Message('Checking status', commands);
     let rover = new Rover(98382);    // Passes 98382 as the rover's position.
     let response = rover.receiveMessage(message); 
     let expectedResults = {"mode": rover.mode, "generatorWatts": rover.generatorWatts, "position": rover.position };
@@ -43,7 +43,7 @@ describe("Rover class", function() {
 
   it("responds correctly to the mode change command", function() {
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER')];
-    let message = new Message('Test message with two commands', commands);
+    let message = new Message('Changing mode to low power', commands);
     let rover = new Rover(98382);    // Passes 98382 as the rover's position.
     let response = rover.receiveMessage(message); 
     expect(response.results).toEqual([{"completed": true}]);
@@ -52,7 +52,7 @@ describe("Rover class", function() {
 
   it("responds with a false completed value when attempting to move in LOW_POWER mode", function() {
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('MOVE', 10000)];
-    let message = new Message('Test message with two commands', commands);
+    let message = new Message('Error: Low power mode, cannot move', commands);
     let rover = new Rover(98382);    // Passes 98382 as the rover's position.
     let response = rover.receiveMessage(message); 
     expect(response.results[1]).toEqual({"completed": false});
@@ -61,7 +61,7 @@ describe("Rover class", function() {
 
   it("responds with the position for the move command", function() {
     let commands = [new Command('MOVE', 10000)];
-    let message = new Message('Test message with two commands', commands);
+    let message = new Message('Moving to postion 10000', commands);
     let rover = new Rover(98382);    // Passes 98382 as the rover's position.
     let response = rover.receiveMessage(message); 
     expect(rover.position).toEqual(10000);
